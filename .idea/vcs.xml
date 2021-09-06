@@ -2,5 +2,7 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/react-learning/http-request-project" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/react-learning/react-complete-guide-code" vcs="Git" />
   </component>
 </project>
