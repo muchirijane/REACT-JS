@@ -1798,3 +1798,73 @@ sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-ori
 ></iframe>
 
 ---	 
+
+## Fetching Data in React Apps
+- There are different methods you can use to achieve this, like:
+  - Using the fetch method
+  - Using Async and await function
+
+### Using Fetch method
+- The fetch method is an inbuilt function that is used to send HTTP request and get responses.
+- Let's take an example of fetching data from a Moviw API server
+```jsx
+import React, { useState } from 'react';
+
+import MoviesList from './components/MoviesList';
+import './App.css';
+
+function App() {
+    const [movies, setMovies] = useState([]);
+
+    function fetchMoviesHandler() {
+        fetch('https://swapi.dev/api/films/')
+            .then((response) => {
+                return response.json();
+            })
+            .then((data) => {
+                const transformedMovies = data.results.map((movieData) => {
+                    return {
+                        id: movieData.episode_id,
+                        title: movieData.title,
+                        openingText: movieData.opening_crawl,
+                        releaseDate: movieData.release_date,
+                    };
+                });
+                setMovies(transformedMovies);
+            });
+    }
+
+    return (
+        <React.Fragment>
+            <section>
+                <button onClick={fetchMoviesHandler}>Fetch Movies</button>
+            </section>
+            <section>
+                <MoviesList movies={movies} />
+            </section>
+        </React.Fragment>
+    );
+}
+
+export default App;
+
+```
+### Using Async and await 
+- The good thing about this 
+```jsx
+ async function fetchMoviesHandler() {
+        const res = await fetch('https://swapi.dev/api/films/');
+        const data = await res.json();
+
+                const transformedMovies =  data.results.map((movieData) => {
+                    return {
+                        id: movieData.episode_id,
+                        title: movieData.title,
+                        openingText: movieData.opening_crawl,
+                        releaseDate: movieData.release_date,
+                    };
+                });
+                setMovies(transformedMovies);
+
+    }
+```
