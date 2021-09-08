@@ -1849,6 +1849,7 @@ function App() {
 export default App;
 
 ```
+- Learn More about [Fetch Method from Mozilla Docs](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)
 ### Using Async and await 
 - The good thing about this 
 ```jsx
