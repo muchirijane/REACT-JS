@@ -1869,3 +1869,153 @@ export default App;
 
     }
 ```
+
+#### Handling HTTP Errors 
+- You can catch any HTTP errors easily by using different methods. 
+
+- Using `try and catch (error)` for asynchronous functions. See the example below:
+```jsx
+import React, { useState } from 'react';
+
+import MoviesList from './components/MoviesList';
+import './App.css';
+
+function App() {
+    const [movies, setMovies] = useState([]);
+const [isLoading, setLoading] = useState(false);
+const [error, setError] = useState(null);
+   async function fetchMoviesHandler() {
+       setLoading(true);
+       setError(null)
+       try{
+
+           const res = await fetch('https://swapi.dev/api/film/');
+           if(!res.ok){
+               throw new Error(`Something went wrong, ${res.status}.`);
+           }
+           const data = await res.json();
+
+           const transformedMovies =  data.results.map((movieData) => {
+               return {
+                   id: movieData.episode_id,
+                   title: movieData.title,
+                   openingText: movieData.opening_crawl,
+                   releaseDate: movieData.release_date,
+               };
+           });
+           setMovies(transformedMovies);
+
+       } catch (error) {
+           setError(error.message);
+       }
+       setLoading(false);
+
+
+
+    }
+    let content =  <p>No movies Found</p>;
+    if(isLoading){
+         content = <p>Loading....</p>;
+    }
+    if(error) {
+        content = <p>{error}</p>;
+    }
+    if(movies.length > 0){
+       content =  <MoviesList movies={movies} />;
+    }
+
+    return (
+        <React.Fragment>
+            <section>
+                <button onClick={fetchMoviesHandler}>Fetch Movies</button>
+            </section>
+            <section>
+                {content}
+            </section>
+        </React.Fragment>
+    );
+}
+
+export default App;
+
+```
+
+### UseEffect Hook
+- Fetching data will make our component change, this is the side effect of getting
+data from an external source (API) by sending the HTTP request. With this concept in mind it's better to use `useEffect` instead of
+using the function only. 
+- If the asynchronously fetched data will be rendered as part of the component rendered cycle, `useEffect` will be the right choice. 
+When the component renders for the first time the fetched data will be visible on the browser.
+- Also adding the dependency in your useEffect hook will ensure it's rendered when the dependency changes.
+
+```jsx
+import {useState, useEffect, useCallback} from 'react';
+
+import MoviesList from './components/MoviesList';
+import './App.css';
+
+function App() {
+    const [movies, setMovies] = useState([]);
+const [isLoading, setLoading] = useState(false);
+const [error, setError] = useState(null);
+   const fetchMoviesHandler =useCallback( async()=>  {
+       setLoading(true);
+       setError(null)
+       try{
+
+           const res = await fetch('https://swapi.dev/api/films/');
+           if(!res.ok){
+               throw new Error(`Something went wrong, ${res.status}.`);
+           }
+           const data = await res.json();
+
+           const transformedMovies =  data.results.map((movieData) => {
+               return {
+                   id: movieData.episode_id,
+                   title: movieData.title,
+                   openingText: movieData.opening_crawl,
+                   releaseDate: movieData.release_date,
+               };
+           });
+           setMovies(transformedMovies);
+
+       } catch (error) {
+           setError(error.message);
+       }
+       setLoading(false);
+    })
+
+    useEffect(()=>{
+        fetchMoviesHandler();
+    }, [fetchMoviesHandler]);
+
+    
+
+    let content =  <p>No movies Found</p>;
+    if(isLoading){
+         content = <p>Loading....</p>;
+    }
+    if(error) {
+        content = <p>{error}</p>;
+    }
+    if(movies.length > 0){
+       content =  <MoviesList movies={movies} />;
+    }
+
+    return (
+        <>
+            
+            
+            <section>
+                <button onClick={fetchMoviesHandler}>Fetch Movies</button>
+            </section>
+            <section>
+                {content}
+            </section>
+        </>
+    );
+}
+
+export default App;
+
+```
