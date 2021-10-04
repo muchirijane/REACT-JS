@@ -16,11 +16,17 @@ function App() {
     setTodos((prevTodos) => [...prevTodos, newTodo]);
 
   }
+
+  const deleteHandler = (todoId: number) => {
+    setTodos((prevTodos) => prevTodos.filter(todo => todo.id !== todoId));
+
+  }
+
   return (
     <Container maxWidth='md'>
       <h1>Hello Typescript</h1>
       <TodoForm onAddTodo={addTodoHandler} />
-      <Todos items={todos} />
+      <Todos items={todos} onDeleteTodo={deleteHandler} />
 
     </Container>
   );

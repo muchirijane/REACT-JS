@@ -6,14 +6,14 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 
-const TodoItem: React.FC<{ text: string }> = ({ text }) => {
+const TodoItem: React.FC<{ text: string; onDeleteTodo: () => void }> = ({ text, onDeleteTodo }) => {
   return (
 
     <ListItem>
       <ListItemButton>
         <ListItemText primary={text} />
         <ListItemIcon>
-          <DeleteRoundedIcon color='secondary' />
+          <DeleteRoundedIcon color='secondary' onClick={onDeleteTodo} />
         </ListItemIcon>
 
       </ListItemButton>
