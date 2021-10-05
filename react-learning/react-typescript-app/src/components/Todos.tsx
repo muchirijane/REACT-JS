@@ -1,13 +1,14 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import List from '@mui/material/List';
-import Todo from '../models/todo'
 import TodoItem from './TodoItem';
+import { TodoContext } from '../store/TodoContext';
 
-const Todos: React.FC<{ items: Todo[]; onDeleteTodo: (todoId: number) => void }> = ({ items, onDeleteTodo }) => {
+const Todos: React.FC = () => {
+  const todoContext = useContext(TodoContext);
   return (
     <List>
-      {items.map(item => (
-        <TodoItem key={item.id} text={item.text} onDeleteTodo={onDeleteTodo.bind(null, item.id)} />
+      {todoContext.items.map(item => (
+        <TodoItem key={item.id} text={item.text} onDeleteTodo={todoContext.removeTodo.bind(null, item.id)} />
       ))}
 
     </List>

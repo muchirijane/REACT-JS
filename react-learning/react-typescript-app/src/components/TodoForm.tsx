@@ -1,8 +1,9 @@
-import { FormEvent, useState } from 'react'
+import { FormEvent, useState, useContext } from 'react'
 
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { makeStyles } from '@mui/styles';
+import { TodoContext } from '../store/TodoContext';
 
 const useStyles = makeStyles({
   field: {
@@ -12,10 +13,11 @@ const useStyles = makeStyles({
   }
 });
 
-const TodoForm: React.FC<{ onAddTodo: (todo: string) => void }> = ({ onAddTodo }) => {
+const TodoForm: React.FC = () => {
   const classes = useStyles();
   const [taskError, setTaskError] = useState(false);
   const [task, setTask] = useState('');
+  const todoCtx = useContext(TodoContext);
 
   const addTodo = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTask(e.target.value);
@@ -28,7 +30,7 @@ const TodoForm: React.FC<{ onAddTodo: (todo: string) => void }> = ({ onAddTodo }
       return;
     }
     const addedTask = task;
-    onAddTodo(addedTask);
+    todoCtx.addTodo(addedTask);
 
   }
 
